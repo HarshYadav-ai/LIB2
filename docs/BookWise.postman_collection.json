@@ -1,0 +1,150 @@
+{
+  "info": {
+    "_postman_id": "9b77fe2a-83b9-4a9b-a0d3-b00b001c0a11",
+    "name": "BookWise AI API",
+    "description": "BookWise API v1 requests. Login stores the HTTP-only session cookie automatically in Postman's localhost cookie jar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@bookwise.local"
+    },
+    {
+      "key": "adminPassword",
+      "value": "replace-with-generated-password"
+    },
+    {
+      "key": "studentEmail",
+      "value": "student@example.com"
+    },
+    {
+      "key": "studentPassword",
+      "value": "ChangeThisStudent123!"
+    },
+    {
+      "key": "bookId",
+      "value": "replace-with-book-id"
+    },
+    {
+      "key": "recommendationUrl",
+      "value": "http://localhost:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Student registration",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Demo Student\",\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{studentPassword}}\",\n  \"studentId\": \"STU-1001\",\n  \"department\": \"Computer Science\"\n}"
+        },
+        "url": "{{baseUrl}}/auth/register"
+      }
+    },
+    {
+      "name": "Admin or student login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\",\n  \"rememberMe\": true\n}"
+        },
+        "url": "{{baseUrl}}/auth/login"
+      }
+    },
+    {
+      "name": "Current account",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/auth/me"
+      }
+    },
+    {
+      "name": "Browse books",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/books?limit=20&page=1"
+      }
+    },
+    {
+      "name": "Student checkout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookId\": \"{{bookId}}\"\n}"
+        },
+        "url": "{{baseUrl}}/loans"
+      }
+    },
+    {
+      "name": "Admin dashboard",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/admin/dashboard"
+      }
+    },
+    {
+      "name": "Librarian dashboard",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/librarian/dashboard"
+      }
+    },
+    {
+      "request": {
+        "url": "{{recommendationUrl}}/health",
+        "method": "GET"
+      },
+      "name": "FastAPI recommendation health"
+    },
+    {
+      "request": {
+        "header": [
+          {
+            "value": "application/json",
+            "key": "Content-Type"
+          }
+        ],
+        "method": "POST",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"books\": [\n    {\"id\":\"1\",\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"description\":\"A desert planet and an interstellar empire.\",\"category\":\"Science Fiction\",\"genres\":[\"science fiction\",\"politics\"],\"rating\":4.8,\"popularity\":34},\n    {\"id\":\"2\",\"title\":\"Foundation\",\"author\":\"Isaac Asimov\",\"description\":\"The fall and rebuilding of a galactic empire.\",\"category\":\"Science Fiction\",\"genres\":[\"science fiction\",\"space opera\"],\"rating\":4.7,\"popularity\":23}\n  ],\n  \"preferences\": [\"science fiction\", \"space opera\"],\n  \"limit\": 5\n}"
+        },
+        "url": "{{recommendationUrl}}/recommendations"
+      },
+      "name": "FastAPI recommendation example"
+    }
+  ]
+}
