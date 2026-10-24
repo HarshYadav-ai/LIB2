@@ -1,0 +1,27 @@
+{
+  "name": "bookwise-ai",
+  "version": "1.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web,ai -c blue,green,magenta \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:recommendation\"",
+    "dev:client": "npm run dev --workspace frontend",
+    "dev:server": "npm run dev --workspace backend",
+    "setup:recommendation": "cd /d recommendation-service && py -m venv .venv && .venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+    "dev:recommendation": "cd /d recommendation-service && .venv\\Scripts\\python.exe -m uvicorn main:app --reload --port 8000",
+    "seed:admin": "npm run seed:admin --workspace backend",
+    "seed:books": "npm run seed:books --workspace backend",
+    "catalogue:download": "node backend/scripts/download-catalogue.js",
+    "test:backend": "npm run test --workspace backend",
+    "test:recommendation": "cd /d recommendation-service && .venv\\Scripts\\python.exe -m unittest discover -s tests -v",
+    "test": "npm run test:backend && npm run test:recommendation",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
